@@ -26,24 +26,23 @@ bloqueo_df <-bloqueo %>%
 
 bloqueo_df %>% glimpse()
 
-
+n<-nrow(bloqueo_df)
 
 
 ############################ EFECTOS CONSTANTES   #####################
 
 #-Defining data-
-n<-nrow(bloqueo_df)
 
 data<-list("n"=n,"y"=bloqueo_df$VAS_1M + 1,"vasab"= bloqueo_df$VAS_AB + 1)
 data<-list("n"=n,"y"=bloqueo_df$VAS_1M,"sexo"=bloqueo_df$Sexo,"edad"=bloqueo_df$GrupoEdad,
             "cancer"=bloqueo_df$TipoCancer2,"imc"=bloqueo_df$GrupoIMC, "vasab" = bloqueo_df$VAS_AB)
 
 #-Defining inits-
-inits_efc_con <- function(){list(theta=1,yf1=rep(1,n) )}
+inits_efc_con <- function(){list(theta=1,yf1=rep(1,n)) }
 
 #-Selecting parameters to monitor-
 par_efc_con <-c("theta","yf1")
-parsc<-c("theta","eta","yf1")
+
 parsd<-c("alpha.adj","beta.adj","gama.adj","delta.adj","yf1")
 
 #-Running code-
@@ -52,7 +51,7 @@ mod_efc_con_bugs <- bugs(
   data,
   inits_efc_con,
   par_efc_con,
-  model.file="modelcode/bloqueo_efc_con.txt",
+  model.file="efc_con.txt",
   n.iter=50000,
   n.chains=2
   ,n.burnin=5000)
@@ -62,7 +61,7 @@ mod_efc_con_jags <-jags(
   data,
   inits_efc_con,
   par_efc_con,
-  model.file="modelcode/bloqueo_efc_con.txt",
+  model.file="efc_con.txt",
   n.iter=50000,
   n.chains=2,
   n.burnin=5000,
@@ -114,12 +113,40 @@ lines(out.yf[or,7],lty=2,col=2)
 
 
 
-############################ EFECTOS    #####################
+############################ EFECTOS INDEPENDIENTES  #####################
 
-
+data<-list("n"=n,"y"=bloqueo_df$VAS_1M + 1,"vasab"= bloqueo_df$VAS_AB + 1)
 inits_efc_ind <- function(){list(theta=rep(1,n),yf1=rep(1,n))}
-inits_efc_int <- function(){list(theta=rep(1,n),a=1,b=1,yf1=rep(1,n))}
-inits_var_exp <- function(){list(alpha=0,beta=rep(0,2),gama=rep(0,2),delta=rep(0,2),yf1=rep(1,n))}
+pars_ind<-c("theta","yf1")
+
+
+#-Running code-
+#OpenBUGS
+mod_efc_ind_bugs <- bugs(
+  data,
+  inits_efc_ind,
+  pars_ind,
+  model.file="efc_ind.txt",
+  n.iter=50000,
+  n.chains=2
+  ,n.burnin=5000)
+
+#JAGS
+mod_efc_ind_jags <-jags(
+  data,
+  inits_efc_ind,
+  pars_ind,
+  model.file="efc_ind.txt",
+  n.iter=50000,
+  n.chains=2,
+  n.burnin=5000,
+  n.thin=1)
+
+
+mod_efc_ind_jags
+
+
+
 
 
 
@@ -148,6 +175,8 @@ bloqueo_agg <- bloqueo %>%
 
 
 
+inits_efc_int <- function(){list(theta=rep(1,n),a=1,b=1,yf1=rep(1,n))}
+inits_var_exp <- function(){list(alpha=0,beta=rep(0,2),gama=rep(0,2),delta=rep(0,2),yf1=rep(1,n))}
 
 
 
