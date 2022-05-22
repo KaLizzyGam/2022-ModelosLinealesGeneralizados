@@ -1,121 +1,121 @@
-Sexo,Edad,IMC ,TipoCancer,VAS_AB,VAS_AB_DIS,MEDD_AB,ECOG_AB,VAS_7D_DIS,MEDD_7D,VAS_1M,VAS_1M_DIS,MEDD_1M
-1,29,27,TG Seminoma,6,Moderado,45,2,Moderado,90,4,Moderado,120
-1,43,25,cáncer colon,8,Intenso,180,2,Moderado,90,7,Moderado,120
-2,65,30,CACU,6,Moderado,50,1,Leve,10,4,Moderado,15
-2,69,24,CACU,5,Moderado,22.5,3,Leve,15,3,Leve,22.5
-2,39,22.6,CACU,4,Moderado,120,2,Leve,120,2,Leve,120
-1,50,27,TGN Seminoma,4,Moderado,180,2,,120,3,Leve,120
-1,56,30,cáncer de prostata,4,Moderado,45,2,Leve,45,2,Leve,45
-1,60,29,cáncer colon,7,Moderado,90,2,Moderado,45,2,Leve,45
-2,52,16.2,CACU,5,Moderado,84,2,Leve,60,3,Leve,45
-2,65,23.6,CACU,5,Moderado,45,2,Leve,30,2,Leve,45
-2,47,25,CACU,7,Moderado,120,2,Leve,90,2,Leve,45
-2,41,20,CACU,5,Moderado,120,2,Leve,60,3,Leve,120
-1,68,25,cáncer de pancreas,4,Moderado,15,1,Leve,15,0,,15
-2,52,23,CACU,8,Intenso,45,2,Moderado,45,5,Moderado,45
-1,30,28,TGNS,7,Moderado,30,2,Moderado,30,4,Moderado,30
-1,60,22,cáncer pancreas,4,Moderado,45,2,Leve,45,3,Leve,45
-2,63,24,CACU,4,Moderado,45,2,Moderado,45,4,Moderado,45
-2,70,23.5,cáncer ovario,5,Moderado,45,2,,22.5,1,Leve,22.5
-2,43,27,CACU,5,Moderado,90,2,,45,2,Leve,45
-2,50,29,CACU,4,Moderado,45,1,Leve,45,3,Leve,30
-2,43,21.3,CACU,4,Moderado,45,2,Leve,30,1,Leve,45
-1,47,25.6,adenocarcinoma de recto,5,Moderado,45,2,Leve,22.5,3,Leve,22.5
-2,33,22.7,CACU,6,Moderado,120,3,Intenso,0,8,Intenso,120
-2,48,19,CACU,4,Moderado,120,3,,60,0,,60
-1,67,29.5,cáncer prostata,9,Intenso,30,2,Leve,45,2,Leve,60
-2,58,22.8,cáncer ovario,4,Moderado,90,2,Leve,45,3,Leve,45
-2,27,19,CACU,6,Moderado,120,2,Leve,60,4,Moderado,120
-1,69,23,cáncer recto,5,Moderado,50,2,,60,3,Leve,90
-2,38,19,CACU,5,Moderado,60,2,Leve,60,5,Moderado,60
-1,34,23,cáncer gastrico,6,Moderado,30,2,Leve,30,3,Leve,30
-2,51,19,CACU,3,Leve,180,3,Leve,120,3,Leve,120
-2,64,24.2,CACU,8,Intenso,90,2,Moderado,90,6,Moderado,90
-2,29,18.7,TG Seminoma,6,Moderado,45,2,Moderado,90,4,Moderado,120
-2,60,25.4,CACU,4,Moderado,84,2,Leve,42,4,Moderado,30
-2,43,21,cáncer colon,8,Intenso,180,2,Moderado,90,7,Moderado,120
-2,63,19,CACU,7,Moderado,50,2,Leve,30,2,Leve,30
-2,40,23.4,CACU,6,Moderado,120,2,Leve,60,2,Leve,60
-2,74,30,CACU,6,Moderado,50,1,Leve,10,4,Moderado,15
-2,55,30,CACU,7,Moderado,30,2,,15,3,Leve,15
-2,65,24,CACU,5,Moderado,22.5,3,Leve,15,3,Leve,22.5
-2,39,22.2,CACU,4,Moderado,120,2,Leve,120,2,Leve,120
-1,50,25,TGN Seminoma,4,Moderado,180,2,,120,3,Leve,120
-2,46,29.7,CACU,4,Moderado,45,2,Leve,45,2,Leve,45
-1,59,19.1,cáncer colon,7,Moderado,90,2,Moderado,45,2,Leve,45
-2,52,16.2,CACU,5,Moderado,84,2,Leve,60,3,Leve,45
-2,39,18.4,CACU,5,Moderado,180,2,,90,2,Leve,90
-2,51,26,CACU,7,Moderado,90,2,Leve,60,2,Leve,60
-2,68,22.9,CACU,5,Moderado,45,2,Leve,30,2,Leve,45
-2,49,27,CACU,7,Moderado,120,2,Leve,90,2,Leve,45
-2,50,23.8,CACU,5,Moderado,120,2,Leve,45,2,Leve,90
-2,41,19.3,CACU,5,Moderado,120,2,Leve,60,3,Leve,120
-2,45,20,CACU,6,Moderado,90,2,Moderado,90,6,Moderado,90
-2,64,25,cáncer de pancreas,4,Moderado,15,1,Leve,15,0,,15
-1,45,29,tumor de GIST intestinal,5,Moderado,22.5,2,Moderado,22.5,6,Moderado,45
-2,55,24.4,CACU,8,Intenso,45,2,Moderado,45,5,Moderado,45
-1,30,27,TGNS,7,Moderado,30,2,Moderado,30,4,Moderado,30
-1,33,24.7,cáncer colon,7,Moderado,30,2,Leve,30,2,Leve,30
-2,64,22,cáncer de pancreas,4,Moderado,45,2,Leve,45,3,Leve,45
-2,35,18.1,CACU,4,Moderado,90,2,Leve,60,2,Leve,60
-2,69,26,CACU,4,Moderado,45,2,Moderado,45,4,Moderado,45
-2,75,25.2,cáncer  ovario,5,Moderado,45,2,,22.5,1,Leve,22.5
-2,45,31,CACU,5,Moderado,90,2,,45,2,Leve,45
-2,49,19,CACU,5,Moderado,180,2,Leve,120,2,Leve,120
-2,53,30.3,CACU,4,Moderado,45,1,Leve,45,3,Leve,30
-2,43,21.3,CACU,4,Moderado,45,2,Leve,30,1,Leve,45
-2,43,18.6,cáncer  ovario,7,Moderado,45,2,Leve,22.5,1,Leve,22.5
-2,56,26.7,Adenocarcinoma mucinoso de apendice ,5,Moderado,45,2,,22.5,2,Leve,22.5
-2,49,26.5,adenocarcinoma de recto,5,Moderado,45,2,Leve,22.5,3,Leve,22.5
-2,36,23.8,CACU,6,Moderado,120,3,Intenso,0,8,Intenso,120
-2,50,19.1,CACU,4,Moderado,120,3,,60,0,,60
-1,71,30,cáncer de prostata,9,Intenso,30,2,Leve,45,2,Leve,60
-2,58,22.8,cáncer  ovario,4,Moderado,90,2,Leve,45,3,Leve,45
-2,52,20.6,cáncer  ovario,7,Moderado,120,2,,120,0,,120
-1,90,32.6,Mieloma multiple,4,Moderado,60,2,,15,0,,15
-2,49,23,cáncer  ovario,4,Moderado,120,2,Leve,60,0,,60
-2,61,24,cáncer colon,6,Moderado,90,2,Leve,90,3,Leve,90
-2,28,20,CACU,6,Moderado,120,2,Leve,60,4,Moderado,120
-2,44,30,CACU,5,Moderado,120,2,Leve,90,3,Leve,120
-2,71,23,cáncer  recto,5,Moderado,50,2,,60,3,Leve,90
-2,41,21,CACU,5,Moderado,60,2,Leve,60,5,Moderado,60
-1,23,18.3,TGNS,5,Moderado,120,2,Moderado,120,4,Moderado,120
-2,73,19,cáncer  ovario,7,Moderado,30,2,Leve,25,3,Leve,25
-2,36,17,CACU,5,Moderado,30,2,Leve,15,2,Leve,30
-2,36,19.6,cáncer gastrico,6,Moderado,30,2,Leve,30,3,Leve,30
-2,55,20,CACU,3,Leve,180,3,Leve,120,3,Leve,120
-2,61,20,adenocarcinoma de recto,7,Moderado,22.5,2,,22.5,4,Moderado,22.5
-1,51,30,adenocarcinoma de recto,8,Intenso,67.5,1,Leve,60,2,Leve,60
-2,50,22,cáncer  ovario,6,Moderado,90,2,Leve,0,3,Leve,0
-2,51,22,cáncer  ovario,6,Moderado,120,3,Leve,90,3,Leve,90
-2,64,26,cáncer de  mama/ovario,6,Moderado,180,3,Leve,90,2,Leve,90
-2,34,17,cáncer  ovario,5,Moderado,60,2,Leve,60,3,Leve,60
-2,39,24,CACU,4,Moderado,90,1,,90,4,Moderado,90
-2,49,19,cáncer  recto,6,Moderado,90,2,Leve,90,0,,90
-2,44,30.2,liposarcoma retropéritoneal,8,Intenso,30,1,Leve,0,2,Leve,0
-2,87,23.2,CACU,7,Moderado,40,2,,37.5,1,Leve,25
-2,44,29,Liposarcoma,8,Intenso,30,2,Leve,30,2,Leve,30
-2,65,32,cáncer  ovario,5,Moderado,50,2,Leve,50,4,Moderado,50
-2,52,17,CACU,6,Moderado,90,2,Leve,90,2,Leve,90
-2,41,28,adenocarcinoma pulmon,6,Moderado,120,2,Moderado,80,5,Moderado,90
-1,44,21,adenocarcinoma de vesicula,7,Moderado,120,2,Moderado,90,4,Moderado,90
-2,53,20,CACU,6,Moderado,120,2,Moderado,90,5,Moderado,90
-2,36,20,CACU,7,Moderado,60,2,Moderado,60,2,Leve,90
-2,78,26,cáncer de endometrio ,9,Intenso,90,2,Leve,45,2,Leve,45
-2,40,18,cáncer  ovario,9,Intenso,45,2,Leve,45,0,,120
-2,66,27,cáncer de mama,6,Moderado,50,2,,15,3,Leve,15
-2,62,20,adenocarcinoma de colon ,6,Moderado,90,2,Leve,90,3,Leve,90
-2,60,27,cáncer  ovario,8,Intenso,90,2,Leve,90,5,Moderado,90
-2,43,16,adenocarcinoma endometrio,8,Intenso,90,1,Leve,90,5,Moderado,90
-2,36,22.4,CACU,7,Moderado,120,2,Leve,60,8,Intenso,0
-2,70,27,cáncer  recto,5,Moderado,120,3,,90,0,,90
-2,47,36,liposarcoma/rabdomiosarcoma,5,Moderado,90,2,,90,3,Leve,90
-2,43,20,CACU,5,Moderado,45,2,Leve,45,1,Leve,45
-2,40,25,CACU,5,Moderado,135,2,Leve,105,4,Moderado,120
-2,49,26.5,adenocarcinoma de recto,5,Moderado,22.5,2,,22.5,3,Leve,22.5
-2,58,22,CACU,5,Moderado,90,2,,90,4,Moderado,90
-2,61,23.5,cáncer  ovario,5,Moderado,30,2,,30,0,,90
-2,41,24,tumor vulva y vagina,9,Intenso,75,2,,90,2,Leve,90
-1,20,18.2,cáncer colon,6,Moderado,45,3,Leve,45,1,Leve,90
-2,36,26.5,cáncer  recto,5,Moderado,90,2,Leve,90,7,Moderado,45
-2,60,27,cáncer de pancreas,10,Intenso,45,3,Leve,22.5,4,Moderado,45
+Sexo,Edad,IMC ,TipoCancer,UbicacionCancer,VAS_AB,VAS_AB_DIS,MEDD_AB,ECOG_AB,VAS_7D_DIS,MEDD_7D,VAS_1M,VAS_1M_DIS,MEDD_1M
+1,29,27,TGN Seminoma,Testículos,6,Moderado,45,2,Moderado,90,4,Moderado,120
+1,43,25,cáncer colon,Colon,8,Intenso,180,2,Moderado,90,7,Moderado,120
+2,65,30,CACU,Cuello Uterino,6,Moderado,50,1,Leve,10,4,Moderado,15
+2,69,24,CACU,Cuello Uterino,5,Moderado,22.5,3,Leve,15,3,Leve,22.5
+2,39,22.6,CACU,Cuello Uterino,4,Moderado,120,2,Leve,120,2,Leve,120
+1,50,27,TGN Seminoma,Testículos,4,Moderado,180,2,,120,3,Leve,120
+1,56,30,cáncer de prostata,Próstata,4,Moderado,45,2,Leve,45,2,Leve,45
+1,60,29,cáncer colon,Colon,7,Moderado,90,2,Moderado,45,2,Leve,45
+2,52,16.2,CACU,Cuello Uterino,5,Moderado,84,2,Leve,60,3,Leve,45
+2,65,23.6,CACU,Cuello Uterino,5,Moderado,45,2,Leve,30,2,Leve,45
+2,47,25,CACU,Cuello Uterino,7,Moderado,120,2,Leve,90,2,Leve,45
+2,41,20,CACU,Cuello Uterino,5,Moderado,120,2,Leve,60,3,Leve,120
+1,68,25,cáncer de pancreas,Páncreas,4,Moderado,15,1,Leve,15,0,,15
+2,52,23,CACU,Cuello Uterino,8,Intenso,45,2,Moderado,45,5,Moderado,45
+1,30,28,TGN Seminoma,Testículos,7,Moderado,30,2,Moderado,30,4,Moderado,30
+1,60,22,cáncer pancreas,Páncreas,4,Moderado,45,2,Leve,45,3,Leve,45
+2,63,24,CACU,Cuello Uterino,4,Moderado,45,2,Moderado,45,4,Moderado,45
+2,70,23.5,cáncer ovario,Ovario,5,Moderado,45,2,,22.5,1,Leve,22.5
+2,43,27,CACU,Cuello Uterino,5,Moderado,90,2,,45,2,Leve,45
+2,50,29,CACU,Cuello Uterino,4,Moderado,45,1,Leve,45,3,Leve,30
+2,43,21.3,CACU,Cuello Uterino,4,Moderado,45,2,Leve,30,1,Leve,45
+1,47,25.6,adenocarcinoma de recto,Recto,5,Moderado,45,2,Leve,22.5,3,Leve,22.5
+2,33,22.7,CACU,Cuello Uterino,6,Moderado,120,3,Intenso,0,8,Intenso,120
+2,48,19,CACU,Cuello Uterino,4,Moderado,120,3,,60,0,,60
+1,67,29.5,cáncer prostata,Próstata,9,Intenso,30,2,Leve,45,2,Leve,60
+2,58,22.8,cáncer ovario,Ovario,4,Moderado,90,2,Leve,45,3,Leve,45
+2,27,19,CACU,Cuello Uterino,6,Moderado,120,2,Leve,60,4,Moderado,120
+1,69,23,cáncer recto,Recto,5,Moderado,50,2,,60,3,Leve,90
+2,38,19,CACU,Cuello Uterino,5,Moderado,60,2,Leve,60,5,Moderado,60
+1,34,23,cáncer gastrico,Estómago,6,Moderado,30,2,Leve,30,3,Leve,30
+2,51,19,CACU,Cuello Uterino,3,Leve,180,3,Leve,120,3,Leve,120
+2,64,24.2,CACU,Cuello Uterino,8,Intenso,90,2,Moderado,90,6,Moderado,90
+2,29,18.7,TGN Seminoma,Testículos,6,Moderado,45,2,Moderado,90,4,Moderado,120
+2,60,25.4,CACU,Cuello Uterino,4,Moderado,84,2,Leve,42,4,Moderado,30
+2,43,21,cáncer colon,Colon,8,Intenso,180,2,Moderado,90,7,Moderado,120
+2,63,19,CACU,Cuello Uterino,7,Moderado,50,2,Leve,30,2,Leve,30
+2,40,23.4,CACU,Cuello Uterino,6,Moderado,120,2,Leve,60,2,Leve,60
+2,74,30,CACU,Cuello Uterino,6,Moderado,50,1,Leve,10,4,Moderado,15
+2,55,30,CACU,Cuello Uterino,7,Moderado,30,2,,15,3,Leve,15
+2,65,24,CACU,Cuello Uterino,5,Moderado,22.5,3,Leve,15,3,Leve,22.5
+2,39,22.2,CACU,Cuello Uterino,4,Moderado,120,2,Leve,120,2,Leve,120
+1,50,25,TGN Seminoma,Testículos,4,Moderado,180,2,,120,3,Leve,120
+2,46,29.7,CACU,Cuello Uterino,4,Moderado,45,2,Leve,45,2,Leve,45
+1,59,19.1,cáncer colon,Colon,7,Moderado,90,2,Moderado,45,2,Leve,45
+2,52,16.2,CACU,Cuello Uterino,5,Moderado,84,2,Leve,60,3,Leve,45
+2,39,18.4,CACU,Cuello Uterino,5,Moderado,180,2,,90,2,Leve,90
+2,51,26,CACU,Cuello Uterino,7,Moderado,90,2,Leve,60,2,Leve,60
+2,68,22.9,CACU,Cuello Uterino,5,Moderado,45,2,Leve,30,2,Leve,45
+2,49,27,CACU,Cuello Uterino,7,Moderado,120,2,Leve,90,2,Leve,45
+2,50,23.8,CACU,Cuello Uterino,5,Moderado,120,2,Leve,45,2,Leve,90
+2,41,19.3,CACU,Cuello Uterino,5,Moderado,120,2,Leve,60,3,Leve,120
+2,45,20,CACU,Cuello Uterino,6,Moderado,90,2,Moderado,90,6,Moderado,90
+2,64,25,cáncer de pancreas,Páncreas,4,Moderado,15,1,Leve,15,0,,15
+1,45,29,tumor de GIST intestinal,Intestino,5,Moderado,22.5,2,Moderado,22.5,6,Moderado,45
+2,55,24.4,CACU,Cuello Uterino,8,Intenso,45,2,Moderado,45,5,Moderado,45
+1,30,27,TGN Seminoma,Testículos,7,Moderado,30,2,Moderado,30,4,Moderado,30
+1,33,24.7,cáncer colon,Colon,7,Moderado,30,2,Leve,30,2,Leve,30
+2,64,22,cáncer de pancreas,Páncreas,4,Moderado,45,2,Leve,45,3,Leve,45
+2,35,18.1,CACU,Cuello Uterino,4,Moderado,90,2,Leve,60,2,Leve,60
+2,69,26,CACU,Cuello Uterino,4,Moderado,45,2,Moderado,45,4,Moderado,45
+2,75,25.2,cáncer  ovario,Ovario,5,Moderado,45,2,,22.5,1,Leve,22.5
+2,45,31,CACU,Cuello Uterino,5,Moderado,90,2,,45,2,Leve,45
+2,49,19,CACU,Cuello Uterino,5,Moderado,180,2,Leve,120,2,Leve,120
+2,53,30.3,CACU,Cuello Uterino,4,Moderado,45,1,Leve,45,3,Leve,30
+2,43,21.3,CACU,Cuello Uterino,4,Moderado,45,2,Leve,30,1,Leve,45
+2,43,18.6,cáncer  ovario,Ovario,7,Moderado,45,2,Leve,22.5,1,Leve,22.5
+2,56,26.7,Adenocarcinoma mucinoso de apendice ,Apéndice,5,Moderado,45,2,,22.5,2,Leve,22.5
+2,49,26.5,adenocarcinoma de recto,Recto,5,Moderado,45,2,Leve,22.5,3,Leve,22.5
+2,36,23.8,CACU,Cuello Uterino,6,Moderado,120,3,Intenso,0,8,Intenso,120
+2,50,19.1,CACU,Cuello Uterino,4,Moderado,120,3,,60,0,,60
+1,71,30,cáncer de prostata,Próstata,9,Intenso,30,2,Leve,45,2,Leve,60
+2,58,22.8,cáncer  ovario,Ovario,4,Moderado,90,2,Leve,45,3,Leve,45
+2,52,20.6,cáncer  ovario,Ovario,7,Moderado,120,2,,120,0,,120
+1,90,32.6,Mieloma multiple,Huesos,4,Moderado,60,2,,15,0,,15
+2,49,23,cáncer  ovario,Ovario,4,Moderado,120,2,Leve,60,0,,60
+2,61,24,cáncer colon,Colon,6,Moderado,90,2,Leve,90,3,Leve,90
+2,28,20,CACU,Cuello Uterino,6,Moderado,120,2,Leve,60,4,Moderado,120
+2,44,30,CACU,Cuello Uterino,5,Moderado,120,2,Leve,90,3,Leve,120
+2,71,23,cáncer  recto,Recto,5,Moderado,50,2,,60,3,Leve,90
+2,41,21,CACU,Cuello Uterino,5,Moderado,60,2,Leve,60,5,Moderado,60
+1,23,18.3,TGN Seminoma,Testículos,5,Moderado,120,2,Moderado,120,4,Moderado,120
+2,73,19,cáncer  ovario,Ovario,7,Moderado,30,2,Leve,25,3,Leve,25
+2,36,17,CACU,Cuello Uterino,5,Moderado,30,2,Leve,15,2,Leve,30
+2,36,19.6,cáncer gastrico,Estómago,6,Moderado,30,2,Leve,30,3,Leve,30
+2,55,20,CACU,Cuello Uterino,3,Leve,180,3,Leve,120,3,Leve,120
+2,61,20,adenocarcinoma de recto,Recto,7,Moderado,22.5,2,,22.5,4,Moderado,22.5
+1,51,30,adenocarcinoma de recto,Recto,8,Intenso,67.5,1,Leve,60,2,Leve,60
+2,50,22,cáncer  ovario,Ovario,6,Moderado,90,2,Leve,0,3,Leve,0
+2,51,22,cáncer  ovario,Ovario,6,Moderado,120,3,Leve,90,3,Leve,90
+2,64,26,cáncer de  mama/ovario,Mama,6,Moderado,180,3,Leve,90,2,Leve,90
+2,34,17,cáncer  ovario,Ovario,5,Moderado,60,2,Leve,60,3,Leve,60
+2,39,24,CACU,Cuello Uterino,4,Moderado,90,1,,90,4,Moderado,90
+2,49,19,cáncer  recto,Recto,6,Moderado,90,2,Leve,90,0,,90
+2,44,30.2,liposarcoma retropéritoneal,Abdomen,8,Intenso,30,1,Leve,0,2,Leve,0
+2,87,23.2,CACU,Cuello Uterino,7,Moderado,40,2,,37.5,1,Leve,25
+2,44,29,Liposarcoma,Abdomen,8,Intenso,30,2,Leve,30,2,Leve,30
+2,65,32,cáncer  ovario,Ovario,5,Moderado,50,2,Leve,50,4,Moderado,50
+2,52,17,CACU,Cuello Uterino,6,Moderado,90,2,Leve,90,2,Leve,90
+2,41,28,adenocarcinoma pulmon,Pulmón,6,Moderado,120,2,Moderado,80,5,Moderado,90
+1,44,21,adenocarcinoma de vesicula,Vesícula,7,Moderado,120,2,Moderado,90,4,Moderado,90
+2,53,20,CACU,Cuello Uterino,6,Moderado,120,2,Moderado,90,5,Moderado,90
+2,36,20,CACU,Cuello Uterino,7,Moderado,60,2,Moderado,60,2,Leve,90
+2,78,26,cáncer de endometrio ,Endometrio,9,Intenso,90,2,Leve,45,2,Leve,45
+2,40,18,cáncer  ovario,Ovario,9,Intenso,45,2,Leve,45,0,,120
+2,66,27,cáncer de mama,Mama,6,Moderado,50,2,,15,3,Leve,15
+2,62,20,adenocarcinoma de colon ,Colon,6,Moderado,90,2,Leve,90,3,Leve,90
+2,60,27,cáncer  ovario,Ovario,8,Intenso,90,2,Leve,90,5,Moderado,90
+2,43,16,adenocarcinoma endometrio,Endometrio,8,Intenso,90,1,Leve,90,5,Moderado,90
+2,36,22.4,CACU,Cuello Uterino,7,Moderado,120,2,Leve,60,8,Intenso,0
+2,70,27,cáncer  recto,Recto,5,Moderado,120,3,,90,0,,90
+2,47,36,liposarcoma/rabdomiosarcoma,Liporsacoma,5,Moderado,90,2,,90,3,Leve,90
+2,43,20,CACU,Cuello Uterino,5,Moderado,45,2,Leve,45,1,Leve,45
+2,40,25,CACU,Cuello Uterino,5,Moderado,135,2,Leve,105,4,Moderado,120
+2,49,26.5,adenocarcinoma de recto,Recto,5,Moderado,22.5,2,,22.5,3,Leve,22.5
+2,58,22,CACU,Cuello Uterino,5,Moderado,90,2,,90,4,Moderado,90
+2,61,23.5,cáncer  ovario,Ovario,5,Moderado,30,2,,30,0,,90
+2,41,24,tumor vulva y vagina,Vagina,9,Intenso,75,2,,90,2,Leve,90
+1,20,18.2,cáncer colon,Colon,6,Moderado,45,3,Leve,45,1,Leve,90
+2,36,26.5,cáncer  recto,Recto,5,Moderado,90,2,Leve,90,7,Moderado,45
+2,60,27,cáncer de pancreas,Páncreas,10,Intenso,45,3,Leve,22.5,4,Moderado,45
