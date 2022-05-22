@@ -1,0 +1,19 @@
+model
+{
+#Likelihood
+for (i in 1:n) {
+	y[i] ~ dgamma(mu[i], 1)
+	mu[i]<-theta*vasab[i]
+}
+
+#Priors 
+theta ~ dnorm(0,1)
+#Prediction 1
+for (i in 1:n) { 
+  
+  yf1[i] ~ dgamma(mu[i], 1) 
+  #yf2[i] <- yf1[i] -1
+
+}
+
+}
