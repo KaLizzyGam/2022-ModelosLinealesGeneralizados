@@ -17,45 +17,43 @@ bloqueo_df <-bloqueo %>%
     GrupoIMC = case_when(
       IMC < 18.5 ~ "PorDebajo",
       IMC < 24.9 ~ "Saludable",
-      IMC < 29.9 ~ "Sobrepeso",
-      T ~ "Obesidad"
+      T ~ "Sobrepeso"
     ),
     TipoCancer2 = if_else(TipoCancer == "CACU", "CACU", "OTRO")
   ) %>% 
-  mutate_at(vars(Sexo, GrupoEdad, TipoCancer2,GrupoIMC), as.factor  ) %>% 
-  select (Sexo, GrupoEdad, TipoCancer2, GrupoIMC, VAS_AB, VAS_1M )
+  mutate_at(vars(Sexo, GrupoEdad, TipoCancer2,GrupoIMC), as.factor  ) %>%
+  group_by(Sexo, GrupoEdad, TipoCancer2, GrupoIMC) %>% 
+  summarise(
+    n = n(),
+    VAS_AB = mean(VAS_AB, na.rm = T), 
+    VAS_1M = mean(VAS_1M, na.rm = T),
+    .groups = "drop"
+  ) %>% 
+  arrange(n)
 
 bloqueo_df %>% glimpse()
 
 n<-nrow(bloqueo_df)
-
+n
 
 ############################ EFECTOS CONSTANTES   #####################
 
 #-Defining data-
 
-data<-list("n"=n,"y"=bloqueo_df$VAS_1M + 1,"vasab"= bloqueo_df$VAS_AB + 1)
-data<-list("n"=n,"y"=bloqueo_df$VAS_1M,"sexo"=bloqueo_df$Sexo,"edad"=bloqueo_df$GrupoEdad,
-            "cancer"=bloqueo_df$TipoCancer2,"imc"=bloqueo_df$GrupoIMC, "vasab" = bloqueo_df$VAS_AB)
-
-#-Defining inits-
+data<-list("n"=n,"y"= bloqueo_df$VAS_1M ,"vasab"=bloqueo_df$VAS_AB )
 inits_efc_con <- function(){list(theta=1,yf1=rep(1,n)) }
-
-#-Selecting parameters to monitor-
 par_efc_con <-c("theta","yf1")
 
-parsd<-c("alpha.adj","beta.adj","gama.adj","delta.adj","yf1")
 
-#-Running code-
-#OpenBUGS
-mod_efc_con_bugs <- bugs(
-  data,
-  inits_efc_con,
-  par_efc_con,
-  model.file="efc_con.txt",
-  n.iter=50000,
-  n.chains=2
-  ,n.burnin=5000)
+##OpenBUGS
+#mod_efc_con_bugs <- bugs(
+#  data,
+#  inits_efc_con,
+#  par_efc_con,
+#  model.file="efc_con.txt",
+#  n.iter=50000,
+#  n.chains=2
+#  ,n.burnin=5000)
 
 #JAGS
 mod_efc_con_jags <-jags(
@@ -77,7 +75,7 @@ mod_efc_con_jags
 
 out_mod_efc_con_simulaciones <- mod_efc_con_jags$BUGSoutput$sims.list
 out_mod_efc_con_resumen <- mod_efc_con_jags$BUGSoutput$summary 
-out_mod_efc_con_dic <- mod_efc_con_jags$BUGSoutput$DIC
+out_mod_efc_con_dic <- mod_efc_con_jags$BUGSoutput$DIC; out_mod_efc_con_dic
 
 names <- rownames(out_mod_efc_con_resumen)
 efc_con_pred <-  as_data_frame(out_mod_efc_con_resumen) %>% 
@@ -85,7 +83,7 @@ efc_con_pred <-  as_data_frame(out_mod_efc_con_resumen) %>%
   tibble() %>% 
   select(mean, names) %>% 
   filter(grepl('yf1', names)) %>% 
-  mutate(efc_con = round(mean)) %>% 
+  mutate(efc_con = mean) %>% 
   select(efc_con)
 
 bloqueo_df <- bloqueo_df %>% cbind(efc_con_pred)
@@ -96,28 +94,30 @@ bloqueo_df <- bloqueo_df %>% cbind(efc_con_pred)
 ## COMPARACIONES
 bloqueo_df %>% as_tibble() %>% 
   ggplot2::ggplot(aes(x=VAS_1M, y=efc_con)) + 
-  geom_jitter()
+  geom_point() +
+  ylim( y = c(1,5)) +
+  xlim(c(1,5))
 
 
 
 
 ############################ EFECTOS INDEPENDIENTES  #####################
 
-data<-list("n"=n,"y"=bloqueo_df$VAS_1M + 1,"vasab"= bloqueo_df$VAS_AB + 1)
+data<-list("n"=n,"y"= bloqueo_df$VAS_1M  ,"vasab"= bloqueo_df$VAS_AB)
 inits_efc_ind <- function(){list(theta=rep(1,n),yf1=rep(1,n))}
 pars_ind<-c("theta","yf1")
 
 
-#-Running code-
-#OpenBUGS
-mod_efc_ind_bugs <- bugs(
-  data,
-  inits_efc_ind,
-  pars_ind,
-  model.file="efc_ind.txt",
-  n.iter=50000,
-  n.chains=2
-  ,n.burnin=5000)
+
+##OpenBUGS
+#mod_efc_ind_bugs <- bugs(
+#  data,
+#  inits_efc_ind,
+#  pars_ind,
+#  model.file="efc_ind.txt",
+#  n.iter=50000,
+#  n.chains=2
+#  ,n.burnin=5000)
 
 #JAGS
 mod_efc_ind_jags <-jags(
@@ -135,7 +135,7 @@ mod_efc_ind_jags
 
 out_mod_efc_ind_simulaciones <- mod_efc_ind_jags$BUGSoutput$sims.list
 out_mod_efc_ind_resumen <- mod_efc_ind_jags$BUGSoutput$summary 
-out_mod_efc_ind_dic <- mod_efc_ind_jags$BUGSoutput$DIC
+out_mod_efc_ind_dic <- mod_efc_ind_jags$BUGSoutput$DIC ; out_mod_efc_ind_dic
 
 names <- rownames(out_mod_efc_ind_resumen)
 efc_ind_pred <-  as_data_frame(out_mod_efc_ind_resumen) %>% 
@@ -143,7 +143,7 @@ efc_ind_pred <-  as_data_frame(out_mod_efc_ind_resumen) %>%
   tibble() %>% 
   select(mean, names) %>% 
   filter(grepl('yf1', names)) %>% 
-  mutate(efc_ind = round(mean)) %>% 
+  mutate(efc_ind = mean) %>% 
   select(efc_ind)
 
 bloqueo_df <- bloqueo_df %>% cbind(efc_ind_pred)
@@ -152,8 +152,11 @@ bloqueo_df <- bloqueo_df %>% cbind(efc_ind_pred)
 ## COMPARACIONES
 bloqueo_df %>% as_tibble() %>% 
   ggplot2::ggplot(aes(x=VAS_1M, y=efc_ind)) + 
-  geom_jitter()
+  geom_point() +
+  ylim( y = c(1,5)) +
+  xlim(c(1,5))
 
+  
 
 
 
@@ -161,82 +164,144 @@ bloqueo_df %>% as_tibble() %>%
 
 
 data<-list("n"=n,"y"=bloqueo_df$VAS_1M + 1,"vasab"= bloqueo_df$VAS_AB + 1)
-inits_efc_ind <- function(){list(theta=rep(1,n),yf1=rep(1,n))}
-pars_ind<-c("theta","yf1")
+inits_efc_inter <-function(){list(theta=rep(1,n),a=1,b=1,yf1=rep(1,n))}
+pars_inter <-c("theta","eta","yf1")
 
 
-#-Running code-
-#OpenBUGS
-mod_efc_ind_bugs <- bugs(
-  data,
-  inits_efc_ind,
-  pars_ind,
-  model.file="efc_ind.txt",
-  n.iter=50000,
-  n.chains=2
-  ,n.burnin=5000)
+
+##OpenBUGS
+#mod_efc_inter_bugs <- bugs(
+#  data,
+#  inits_efc_ind,
+#  pars_ind,
+#  model.file="efc_inter.txt",
+#  n.iter=50000,
+#  n.chains=2
+#  ,n.burnin=5000)
 
 #JAGS
-mod_efc_ind_jags <-jags(
+mod_efc_inter_jags <-jags(
   data,
-  inits_efc_ind,
-  pars_ind,
-  model.file="efc_ind.txt",
+  inits_efc_inter,
+  pars_inter,
+  model.file="efc_inter.txt",
   n.iter=50000,
   n.chains=2,
   n.burnin=5000,
   n.thin=1)
 
 
-mod_efc_ind_jags
+mod_efc_inter_jags
 
-out_mod_efc_ind_simulaciones <- mod_efc_ind_jags$BUGSoutput$sims.list
-out_mod_efc_ind_resumen <- mod_efc_ind_jags$BUGSoutput$summary 
-out_mod_efc_ind_dic <- mod_efc_ind_jags$BUGSoutput$DIC
+out_mod_efc_inter_simulaciones <- mod_efc_inter_jags$BUGSoutput$sims.list
+out_mod_efc_inter_resumen <- mod_efc_inter_jags$BUGSoutput$summary 
+out_mod_efc_inter_dic <- mod_efc_inter_jags$BUGSoutput$DIC; out_mod_efc_inter_dic
 
-names <- rownames(out_mod_efc_ind_resumen)
-efc_ind_pred <-  as_data_frame(out_mod_efc_ind_resumen) %>% 
+names <- rownames(out_mod_efc_inter_resumen)
+efc_inter_pred <-  as_data_frame(out_mod_efc_inter_resumen) %>% 
   cbind(names)  %>% 
   tibble() %>% 
   select(mean, names) %>% 
   filter(grepl('yf1', names)) %>% 
-  mutate(efc_ind = round(mean)) %>% 
-  select(efc_ind)
+  mutate(efc_inter = mean) %>% 
+  select(efc_inter)
 
-bloqueo_df <- bloqueo_df %>% cbind(efc_ind_pred)
+bloqueo_df <- bloqueo_df %>% cbind(efc_inter_pred)
 
 
 ## COMPARACIONES
 bloqueo_df %>% as_tibble() %>% 
-  ggplot2::ggplot(aes(x=VAS_1M, y=efc_ind)) + 
-  geom_jitter()
+  ggplot2::ggplot(aes(x=VAS_1M, y=efc_inter)) + 
+  geom_jitter()+
+  ylim( y = c(1,5)) +
+  xlim(c(1,5))
 
 
 
 
 
 
-#####################################3
-bloqueo_agg <- bloqueo %>% 
-  mutate(GrupoEdad = if_else(Edad < 40, "Grupo1", 
-                             ifelse(Edad < 60, "Grupo2", "Grupo3"))) %>%
-  mutate(GrupoIMC = if_else(IMC < 18.5, "PorDebajo", 
-                            ifelse(IMC <= 24.9, "Saludable",
-                            ifelse(IMC <= 29.9, "Sobrepeso", "Obesidad")))) %>%
-  mutate(VAS_1M_DIS = replace_na(VAS_1M_DIS,"Nulo")) %>% 
-  mutate(TipoCancer2 = if_else(  TipoCancer == "CACU", "CACU", "OTRO")) %>%
-  group_by( VAS_AB_DIS, VAS_1M_DIS) %>% 
-  summarise(Observados = n()) 
+############################ EFECTOS INTERCAMBIABLES CON VARIABLES   #####################
+
+
+data<-list(
+  "n"=n,
+  "y"=bloqueo_df$VAS_1M,
+  "sexo"=bloqueo_df$Sexo,
+  "edad"=bloqueo_df$GrupoEdad,
+  "cancer"=bloqueo_df$TipoCancer2,
+  "imc"=bloqueo_df$GrupoIMC, 
+  "vasab" = bloqueo_df$VAS_AB)
+
+
+inits_efc_ind_var <- function(){
+  list(
+   yf1=rep(1,n),
+   beta_sexo=rep(1,2), 
+   beta_edad=rep(1,2), 
+   alpha = 1, 
+   beta_cancer=rep(1,2),
+   beta_imc=rep(1,3) ) }
+
+pars_ind_var <-c(
+  "theta",
+  "yf1",
+  "alpha_adj",
+  "beta_sexo_adj",
+  "beta_edad_adj", 
+  "beta_cancer_adj",
+  "beta_imc_adj")
 
 
 
 
-inits_efc_int <- function(){list(theta=rep(1,n),a=1,b=1,yf1=rep(1,n))}
-inits_var_exp <- function(){list(alpha=0,beta=rep(0,2),gama=rep(0,2),delta=rep(0,2),yf1=rep(1,n))}
+
+##OpenBUGS
+#mod_efc_ind_var_bugs <- bugs(
+#  data,
+#  inits_efc_ind,
+#  pars_ind,
+#  model.file="efc_intercambiables.txt",
+#  n.iter=50000,
+#  n.chains=2
+#  ,n.burnin=5000)
+
+#JAGS
+mod_efc_ind_var_jags <-jags(
+  data,
+  inits_efc_ind_var,
+  pars_ind_var,
+  model.file="efc_ind_var.txt",
+  n.iter=50000,
+  n.chains=2,
+  n.burnin=5000,
+  n.thin=1)
 
 
+mod_efc_ind_var_jags
+
+out_mod_efc_ind_var_simulaciones <- mod_efc_ind_var_jags$BUGSoutput$sims.list
+out_mod_efc_ind_var_resumen <- mod_efc_ind_var_jags$BUGSoutput$summary 
+out_mod_efc_ind_var_dic <- mod_efc_ind_var_jags$BUGSoutput$DIC
+
+names <- rownames(out_mod_efc_ind_var_resumen)
+efc_ind_var_pred <-  as_data_frame(out_mod_efc_ind_var_resumen) %>% 
+  cbind(names)  %>% 
+  tibble() %>% 
+  select(mean, names) %>% 
+  filter(grepl('yf1', names)) %>% 
+  mutate(efc_ind_var = mean) %>% 
+  select(efc_ind_var)
+
+bloqueo_df <- bloqueo_df %>% cbind(efc_ind_var_pred)
 
 
+## COMPARACIONES
+bloqueo_df %>% as_tibble() %>% 
+  ggplot2::ggplot(aes(x=VAS_1M, y=efc_ind_var)) + 
+  geom_jitter()+
+  ylim( y = c(1,5)) +
+  xlim(c(1,5))
 
 
 

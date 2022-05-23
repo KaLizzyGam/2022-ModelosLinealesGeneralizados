@@ -1,0 +1,42 @@
+model
+{
+#Likelihood
+for (i in 1:n) {
+	y[i] ~ dgamma(mu[i], 1)
+	mu[i]<-theta[i]*vasab[i]
+	log(theta[i]) <- alpha + beta_sexo[sexo[i]] + beta_edad[edad[i]] + beta_cancer[cancer[i]] + beta_imc[imc[i]] 
+}
+
+#Priors 
+
+alpha ~ dnorm(0,0.001)
+
+
+for (j in 1:2) { 
+	beta_sexo[j] ~ dnorm(0,0.001) 
+	beta_edad[j] ~ dnorm(0,0.001) 
+	beta_cancer[j] ~ dnorm(0,0.001)}
+
+for (j in 1:3) { 
+	beta_imc[j] ~ dnorm(0,0.001)}
+
+
+#Prediction 1
+for (i in 1:n) { 
+  yf1[i] ~  dgamma(mu[i], 1) 
+}
+
+#Estimable quantities
+alpha_adj <- alpha+mean(beta_sexo[])+mean(beta_edad[])+mean(beta_cancer[])+mean(beta_imc[])
+for (j in 1:2) { 
+	beta_sexo_adj[j] <- beta_sexo[j]-mean(beta_sexo[])
+	beta_edad_adj[j] <- beta_edad[j]-mean(beta_edad[])
+	beta_cancer_adj[j] <- beta_cancer[j]-mean(beta_cancer[])
+}
+
+for (j in 1:3) { 
+	beta_imc_adj[j] <- beta_imc[j]-mean(beta_imc[])
+}
+
+
+}

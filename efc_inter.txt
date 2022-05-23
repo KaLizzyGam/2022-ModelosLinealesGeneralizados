@@ -1,0 +1,18 @@
+model
+{
+#Likelihood
+for (i in 1:n) {
+		y[i] ~ dgamma(mu[i], 1)
+	mu[i]<-theta[i]*vasab[i]
+}
+
+#Priors 
+for (j in 1:n) { theta[j] ~ dbeta(a,b) }
+a ~ dgamma(0.01,0.01)
+b ~ dgamma(0.01,0.01)
+
+#Prediction 1
+for (i in 1:n) { yf1[i] ~ dgamma(mu[i], 1)}
+#Quantities of interest
+eta <- a/b
+}
