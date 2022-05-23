@@ -10,6 +10,19 @@ bloqueo <- read_csv("data/BloqueoDatos.csv")
 bloqueo %>% glimpse()
 skimr::skim(bloqueo)
 
+bloqueo <-bloqueo %>%  
+  mutate(
+    GrupoEdad = if_else(Edad < 50, "Grupo1", "Grupo2"),
+    GrupoIMC = case_when(
+      IMC < 18.5 ~ "PorDebajo",
+      IMC < 24.9 ~ "Saludable",
+      T ~ "Sobrepeso"
+    ),
+    TipoCancer2 = if_else(TipoCancer == "CACU", "CACU", "OTRO")
+  ) %>% 
+  mutate_at(vars(Sexo, GrupoEdad, TipoCancer2,GrupoIMC), as.factor)
+
+
 
 bloqueo_df <-bloqueo %>%  
   mutate(
@@ -33,8 +46,27 @@ bloqueo_df <-bloqueo %>%
 
 bloqueo_df %>% glimpse()
 
-n<-nrow(bloqueo_df)
-n
+n<-nrow(bloqueo_df); n
+
+############################ DESCRIPTIVO #########
+bloqueo_df %>% 
+  ggplot(aes(x=VAS_AB)) +
+  geom_histogram(colour = 5, fill = "white", alpha = 0.75,
+                 position = "identity", bins = 25)
+
+
+bloqueo %>% 
+  ggplot(aes(x=VAS_AB, y= VAS_1M, color = Sexo)) +
+  geom_point( alpha = 0.75)
+
+bloqueo %>% 
+  ggplot(aes(x=VAS_AB, y= VAS_1M, color = Sexo, size=GrupoEdad)) +
+  geom_point()
+
+
+
+
+
 
 ############################ EFECTOS CONSTANTES   #####################
 
@@ -221,7 +253,7 @@ bloqueo_df %>% as_tibble() %>%
 
 
 
-############################ EFECTOS INTERCAMBIABLES CON VARIABLES   #####################
+############################ EFECTOS INDEPENDIENTES CON VARIABLES   #####################
 
 
 data<-list(
