@@ -9,16 +9,15 @@ for (i in 1:n) {
 
 #Priors 
 
-alpha ~ dnorm(0,0.001)
-
+alpha ~ dnorm(0,2)
 
 for (j in 1:2) { 
 	beta_sexo[j] ~ dnorm(0,2) 
-	beta_edad[j] ~ dnorm(0,1) 
-	beta_cancer[j] ~ dnorm(0,1)}
+	beta_edad[j] ~ dnorm(0,2) 
+	beta_cancer[j] ~ dnorm(0,2)}
 
 for (j in 1:3) { 
-	beta_imc[j] ~ dnorm(0,1)}
+	beta_imc[j] ~ dnorm(0,2)}
 
 
 #Prediction 1
