@@ -144,11 +144,12 @@ fun_efc_ctes <- function(var_in) {
   df <- df %>% cbind(efc_con_pred)
   
   ## COMPARACIONES
-  df %>% as_tibble() %>% 
+  ggp <- df %>% as_tibble() %>% 
     ggplot2::ggplot(aes(x=df[[var_in[1]]], y=efc_con)) + 
     geom_point() +
     ylim( y = c(1,5)) +
     xlim(c(1,5)) %>% labs(x=var_in[1], title=var_in[2])
+  print(ggp)
   
   # PSEUDO R2
   out.yf<-out_mod_efc_con_resumen[grep("yf1",rownames(out_mod_efc_con_resumen)),]
@@ -200,11 +201,12 @@ fun_efc_ind <- function(var_in) {
   df <- df %>% cbind(efc_ind_pred)
   
   ## COMPARACIONES
-  df %>% as_tibble() %>% 
+  ggp <- df %>% as_tibble() %>% 
     ggplot2::ggplot(aes(x=df[[var_in[1]]], y=efc_ind)) + 
     geom_point() +
     ylim( y = c(1,5)) +
     xlim(c(1,5)) %>% labs(x=var_in[1], title=var_in[2])
+  print(ggp)
   
   # PSEUDO R2
   out.yf<-out_mod_efc_ind_resumen[grep("yf1",rownames(out_mod_efc_ind_resumen)),]
@@ -256,11 +258,12 @@ fun_efc_int <- function(var_in) {
   df <- df %>% cbind(efc_inter_pred)
   
   ## COMPARACIONES
-  df %>% as_tibble() %>% 
+  ggp <- df %>% as_tibble() %>% 
     ggplot2::ggplot(aes(x=df[[var_in[1]]], y=efc_inter)) + 
     geom_point() +
     ylim( y = c(1,5)) +
     xlim(c(1,5)) %>% labs(x=var_in[1], title=var_in[2])
+  print(ggp)
   
   # PSEUDO R2
   out.yf<-out_mod_efc_inter_resumen[grep("yf1",rownames(out_mod_efc_inter_resumen)),]
@@ -334,16 +337,17 @@ fun_efc_ind_con_var <- function(var_in) {
   df <- df %>% cbind(efc_ind_var_pred)
   
   ## COMPARACIONES
-  df %>% as_tibble() %>% 
+  ggp <- df %>% as_tibble() %>% 
     ggplot2::ggplot(aes(x=df[[var_in[1]]], y=efc_ind_var)) + 
     geom_point() +
     ylim( y = c(1,5)) +
     xlim(c(1,5)) %>% labs(x=var_in[1], title=var_in[2])
+  print(ggp)
   
   # PSEUDO R2
   out.yf<-out_mod_efc_ind_var_resumen[grep("yf1",rownames(out_mod_efc_ind_var_resumen)),]
   plot(df[[var_in[1]]], out.yf[,1],xlab=var_in[1])
-  title("Efectos intercambiables: Y vs Y predicha")
+  title("Efectos independientes con variables: Y vs Y predicha")
   R2<-(cor(df[[var_in[1]]], out.yf[,1]))^2
   #print("R2")
   #print(R2)
@@ -483,7 +487,3 @@ bloqueo_df %>% as_tibble() %>%
   geom_jitter()+
   ylim( y = c(1,5)) +
   xlim(c(1,5))
-
-
-
-
