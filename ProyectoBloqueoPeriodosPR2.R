@@ -4,24 +4,21 @@ library(dplyr)
 library(tidyr)
 library(skimr)
 library(ggplot2)
+library(rlang)
 
 ###### Carga de datos
 bloqueo <- read_csv("data/BloqueoDatosPeriodo.csv")
-#bloqueo
-#View(bloqueo)
-# EDA
-bloqueo %>% glimpse()
 
-bloqueo <- bloqueo %>% mutate(
+# Categotizacion de variables
+bloqueo <- bloqueo %>% 
+  mutate(
   GrupoEdad = if_else(Edad < 50, "Grupo1", "Grupo2"),
   VAS_6M = as.numeric(VAS_6M),
   GrupoIMC = case_when(
     IMC < 18.5 ~ "PorDebajo",
     IMC < 24.9 ~ "Saludable",
-    T ~ "Sobrepeso"
-  ),
-  TipoCancer2 = if_else(TipoCancer == "CACU", "CACU", "OTRO")
-) %>% 
+    T ~ "Sobrepeso"),
+  TipoCancer2 = if_else(TipoCancer == "CACU", "CACU", "OTRO")) %>% 
   mutate_at(vars(Sexo, GrupoEdad, TipoCancer2,GrupoIMC), as.factor)
 
 skimr::skim(bloqueo)
@@ -30,16 +27,15 @@ skimr::skim(bloqueo)
 vect_names <- bloqueo %>% select(starts_with("VAS")) %>% select(-ends_with("DIS"),-VAS_AB) %>% names()
 vect_names
 
-
 funct_base <- function(bloqueo, vect_names, i){
 bloqueo_agrupada <- bloqueo %>% 
-  select("Sexo","GrupoEdad","GrupoIMC","TipoCancer2", "VAS_AB", vect_names[1]) %>%  
+  select("Sexo","GrupoEdad","GrupoIMC","TipoCancer2", "VAS_AB", vect_names[i]) %>%  
   na.omit() %>% 
   group_by(Sexo, GrupoEdad, TipoCancer2, GrupoIMC) %>% 
   summarise(
     n = n(),
     VAS_AB = mean(VAS_AB, na.rm = T), 
-    OTRO_VAS = mean(vars(6), na.rm = T),#mean(bloqueo(vect_names[1]), na.rm = T),
+    OTRO_VAS = mean(!!sym(vect_names[i]), na.rm = T),#mean(bloqueo(vect_names[1]), na.rm = T),
     .groups = "drop"
   ) %>% 
   arrange(n) 
@@ -50,54 +46,39 @@ names(bloqueo_agrupada) <- nuevos_nombres
 bloqueo_agrupada
 }
 
-bloqueo_df_24 <- funct_base(bloqueo, vect_names, 1)
-bloqueo_df_7d <- funct_base(bloqueo, vect_names, 2)
-bloqueo_df_1m <- funct_base(bloqueo, vect_names, 3)
-bloqueo_df_3m <- funct_base(bloqueo, vect_names, 4)
-bloqueo_df_6m <- funct_base(bloqueo, vect_names, 5)
-
-############################ DESCRIPTIVO #########
-# bloqueo_df %>% 
-#   ggplot(aes(x=VAS_AB)) +
-#   geom_histogram(colour = 5, fill = "white", alpha = 0.75,
-#                  position = "identity", bins = 25)
-# 
-# bloqueo %>% 
-#   ggplot(aes(x=VAS_AB, y= VAS_1M, color = Sexo)) +
-#   geom_point( alpha = 0.75)
-# 
-# bloqueo %>% 
-#   ggplot(aes(x=VAS_AB, y= VAS_1M, color = Sexo, size=GrupoEdad)) +
-#   geom_point()
-# 
-# bloqueo_df$VAS_AB
-
+ 
 
 #################### INICIANDO VARIABLES ####################
-var_ini <- bloqueo_df$VAS_AB
-df <- bloqueo_df
-n <- nrow(bloqueo_df)
 
-var_f <- c("VAS_24","VAS_7D","VAS_1M","VAS_3M","VAS_6M")
+dic_efc_ctes <- list()
+pR2_efc_ctes <- list()
 
-dic_efc_ctes <- c("DIC :")
-pR2_efc_ctes <- c("pR2 :")
+dic_efc_ind <- list()
+pR2_efc_ind <- list()
 
-dic_efc_ind <- c("DIC :")
-pR2_efc_ind <- c("pR2 :")
+dic_efc_int <- list()
+pR2_efc_int <- list()
 
-dic_efc_int <- c("DIC 1:")
-pR2_efc_int <- c("pR2 2:")
-
-dic_efc_ind_con_var <- c("DIC 1:")
-pR2_efc_ind_con_var <- c("pR2 2:")
+dic_efc_ind_con_var <- list()
+pR2_efc_ind_con_var <- list()
 
 
-#################### FUNCIONES
+
+
+
 ############################ EFECTOS CONSTANTES #####################
-fun_efc_ctes <- function(var_in) {
+
+#vect_names <- bloqueo %>% select(starts_with("VAS")) %>% select(-ends_with("DIS"),-VAS_AB) %>% names()
+#bloqueo_df <- funct_base(bloqueo, vect_names, i)
+#n <- nrow(bloqueo_df)
+#var_ini <- bloqueo_df$VAS_AB
+#var_in <-vect_names[i]
+#print(var_in)
+#fun_efc_ctes(var_in,bloqueo_df, var_ini )
+
+fun_efc_ctes <- function(var_in, bloqueo_df, var_ini, dic_efc_ctes, pR2_efc_ctes, n) {
   #-Defining data-
-  data<-list("n"=n,"y"= df[[var_in[1]]],"vasab"=var_ini)
+  data<-list("n"=n,"y"= pull(bloqueo_df[var_in]),"vasab"=var_ini)
   inits_efc_con <- function(){list(theta=1,yf1=rep(1,n)) }
   par_efc_con <-c("theta","yf1")
   
@@ -119,9 +100,9 @@ fun_efc_ctes <- function(var_in) {
   out_mod_efc_con_simulaciones <- mod_efc_con_jags$BUGSoutput$sims.list
   out_mod_efc_con_resumen <- mod_efc_con_jags$BUGSoutput$summary 
   out_mod_efc_con_dic <- mod_efc_con_jags$BUGSoutput$DIC; 
-  #print("DIC:")
-  #print(out_mod_efc_con_dic)
-  dic_efc_ctes <<- c(dic_efc_ctes,out_mod_efc_con_dic)
+
+  
+  #dic_efc_ctes[var_in] <- out_mod_efc_con_dic
   
   names <- rownames(out_mod_efc_con_resumen)
   efc_con_pred <-  as.data.frame(out_mod_efc_con_resumen) %>% 
@@ -132,30 +113,37 @@ fun_efc_ctes <- function(var_in) {
     mutate(efc_con = mean) %>% 
     select(efc_con)
   
-  df <- df %>% cbind(efc_con_pred)
+  df <- bloqueo_df %>% cbind(efc_con_pred)
   
   ## COMPARACIONES
   ggp <- df %>% as_tibble() %>% 
-    ggplot2::ggplot(aes(x=df[[var_in[1]]], y=efc_con)) + 
-    geom_point() +
-    ylim( y = c(1,6)) +
-    xlim(c(1,6)) + coord_equal() %>% labs(x=var_in[1], title=var_in[2]) 
-  print(ggp)
+    ggplot2::ggplot(aes(x=!!sym(var_in), y=efc_con)) + 
+    geom_point()  + 
+    coord_equal() %>% 
+    labs(x=var_in, title= paste ("Efectos constantes: Y vs Y predicha ",var_in) )
+ 
   
   # PSEUDO R2
-  out.yf<-out_mod_efc_con_resumen[grep("yf1",rownames(out_mod_efc_con_resumen)),]
-  plot(df[[var_in[1]]], out.yf[,1],xlab=var_in[1])
-  title("Efectos constantes: Y vs Y predicha")
-  R2<-(cor(df[[var_in[1]]], out.yf[,1]))^2
-  #print("R2")
-  #print(R2)
-  pR2_efc_ctes <<- c(pR2_efc_ctes,R2)
+  #pR2_efc_ctes[var_in]  <- cor(pull(bloqueo_df[var_in]) , pull(efc_con_pred))^2
+  
+  modelo <- list()
+  ##modelo["summary"] <-  as.matrix( out_mod_efc_con_resumen)
+  modelo["n"] <- n
+  modelo["modelo"] <- "Efectos constantes"
+  modelo["var_in"]<-  var_in
+  modelo["DIC"]<- out_mod_efc_con_dic
+  modelo["R2"]<- cor(pull(bloqueo_df[var_in]) , pull(efc_con_pred))^2
+  print(modelo)
+  print(ggp)
+  
+  return(modelo)
+  
 }
 
 ############################ EFECTOS INDEPENDIENTES  #####################
-fun_efc_ind <- function(var_in) {
+fun_efc_ind <- function(var_in, bloqueo_df) {
   #-Defining data-
-  data<-list("n"=n,"y"= df[[var_in[1]]] ,"vasab"= var_ini)
+  data<-list("n"=n,"y"= pull(bloqueo_df[var_in]) ,"vasab"= var_ini)
   inits_efc_ind <- function(){list(theta=rep(1,n),yf1=rep(1,n))}
   pars_ind<-c("theta","yf1")
   
@@ -176,9 +164,8 @@ fun_efc_ind <- function(var_in) {
   out_mod_efc_ind_simulaciones <- mod_efc_ind_jags$BUGSoutput$sims.list
   out_mod_efc_ind_resumen <- mod_efc_ind_jags$BUGSoutput$summary 
   out_mod_efc_ind_dic <- mod_efc_ind_jags$BUGSoutput$DIC ; 
-  #print("DIC:")
-  #print(out_mod_efc_ind_dic)
-  dic_efc_ind <<- c(dic_efc_ind,out_mod_efc_ind_dic)
+
+  dic_efc_ind[var_in]  <- out_mod_efc_ind_dic
   
   names <- rownames(out_mod_efc_ind_resumen)
   efc_ind_pred <-  as.data.frame(out_mod_efc_ind_resumen) %>% 
@@ -189,30 +176,25 @@ fun_efc_ind <- function(var_in) {
     mutate(efc_ind = mean) %>% 
     select(efc_ind)
   
-  df <- df %>% cbind(efc_ind_pred)
+  df <- bloqueo_df %>% cbind(efc_ind_pred)
   
   ## COMPARACIONES
   ggp <- df %>% as_tibble() %>% 
-    ggplot2::ggplot(aes(x=df[[var_in[1]]], y=efc_ind)) + 
+    ggplot2::ggplot(aes(x=!!sym(var_in), y=efc_ind)) + 
     geom_point() +
-    ylim( y = c(1,5)) +
-    xlim(c(1,5)) %>% labs(x=var_in[1], title=var_in[2])
+    coord_equal() %>% 
+    labs(x=var_in, title= paste ("Efectos independientes: Y vs Y predicha ",var_in) )
+    
   print(ggp)
   
   # PSEUDO R2
-  out.yf<-out_mod_efc_ind_resumen[grep("yf1",rownames(out_mod_efc_ind_resumen)),]
-  plot(df[[var_in[1]]], out.yf[,1],xlab=var_in[1])
-  title("Efectos independientes: Y vs Y predicha")
-  R2<-(cor(df[[var_in[1]]], out.yf[,1]))^2
-  #print("R2")
-  #print(R2)
-  pR2_efc_ind <<- c(pR2_efc_ind,R2)
+  pR2_efc_ind[var_in] <- cor( pull(bloqueo_df[var_in]), pull(efc_ind_pred))^2
 }
 
 ############################ EFECTOS INTERCAMBIABLES   #####################
-fun_efc_int <- function(var_in) {
+fun_efc_int <- function(var_in, bloqueo_df) {
   #-Defining data-
-  data<-list("n"=n,"y"= df[[var_in[1]]] + 1,"vasab"= var_ini + 1)
+  data<-list("n"=n,"y"= pull(bloqueo_df[var_in]),"vasab"= var_ini )
   inits_efc_inter <-function(){list(theta=rep(1,n),a=1,b=1,yf1=rep(1,n))}
   pars_inter <-c("theta","eta","yf1")
   
@@ -233,9 +215,8 @@ fun_efc_int <- function(var_in) {
   out_mod_efc_inter_simulaciones <- mod_efc_inter_jags$BUGSoutput$sims.list
   out_mod_efc_inter_resumen <- mod_efc_inter_jags$BUGSoutput$summary 
   out_mod_efc_inter_dic <- mod_efc_inter_jags$BUGSoutput$DIC; 
-  #print("DIC:")
-  #print(out_mod_efc_inter_dic)
-  dic_efc_int <<- c(dic_efc_int,out_mod_efc_inter_dic)
+  
+  dic_efc_int[var_in] <- out_mod_efc_inter_dic
   
   names <- rownames(out_mod_efc_inter_resumen)
   efc_inter_pred <-  as.data.frame(out_mod_efc_inter_resumen) %>% 
@@ -246,35 +227,32 @@ fun_efc_int <- function(var_in) {
     mutate(efc_inter = mean) %>% 
     select(efc_inter)
   
-  df <- df %>% cbind(efc_inter_pred)
+  df <- bloqueo_df %>% cbind(efc_inter_pred)
   
   ## COMPARACIONES
   ggp <- df %>% as_tibble() %>% 
-    ggplot2::ggplot(aes(x=df[[var_in[1]]], y=efc_inter)) + 
+    ggplot2::ggplot(aes(x=!!sym(var_in), y=efc_inter)) + 
     geom_point() +
-    ylim( y = c(1,5)) +
-    xlim(c(1,5)) %>% labs(x=var_in[1], title=var_in[2])
+    coord_equal() %>% 
+    labs(x=var_in, title= paste ("Efectos intercambiables: Y vs Y predicha ",var_in) )
+  
   print(ggp)
   
   # PSEUDO R2
-  out.yf<-out_mod_efc_inter_resumen[grep("yf1",rownames(out_mod_efc_inter_resumen)),]
-  plot(df[[var_in[1]]], out.yf[,1],xlab=var_in[1])
-  title("Efectos intercambiables: Y vs Y predicha")
-  R2<-(cor(df[[var_in[1]]], out.yf[,1]))^2
-  #print("R2")
-  #print(R2)
-  pR2_efc_int <<- c(pR2_efc_int,R2)
-}
+  pR2_efc_int[var_in] <- cor(pull(bloqueo_df[var_in]),  pull(efc_inter_pred))^2
 
+}
+  
+  
 ############################ EFECTOS INDEPENDIENTES CON VARIABLES   #####################
-fun_efc_ind_con_var <- function(var_in) {
+fun_efc_ind_con_var <- function(var_in, bloqueo_df) {
   data<-list(
     "n"=n,
-    "y"=df[[var_in[1]]],
-    "sexo"=df$Sexo,
-    "edad"=df$GrupoEdad,
-    "cancer"=df$TipoCancer2,
-    "imc"=df$GrupoIMC, 
+    "y"=pull(bloqueo_df[var_in]),
+    "sexo"=bloqueo_df$Sexo,
+    "edad"=bloqueo_df$GrupoEdad,
+    "cancer"=bloqueo_df$TipoCancer2,
+    "imc"=bloqueo_df$GrupoIMC, 
     "vasab" = var_ini)
   
   inits_efc_ind_var <- function(){
@@ -312,9 +290,8 @@ fun_efc_ind_con_var <- function(var_in) {
   out_mod_efc_ind_var_simulaciones <- mod_efc_ind_var_jags$BUGSoutput$sims.list
   out_mod_efc_ind_var_resumen <- mod_efc_ind_var_jags$BUGSoutput$summary 
   out_mod_efc_ind_var_dic <- mod_efc_ind_var_jags$BUGSoutput$DIC
-  #print("DIC:")
-  #print(out_mod_efc_ind_var_dic)
-  dic_efc_ind_con_var <<- c(dic_efc_ind_con_var,out_mod_efc_ind_var_dic)
+
+  dic_efc_ind_con_var[var_in] <- out_mod_efc_ind_var_dic
   
   names <- rownames(out_mod_efc_ind_var_resumen)
   efc_ind_var_pred <-  as.data.frame(out_mod_efc_ind_var_resumen) %>% 
@@ -325,25 +302,66 @@ fun_efc_ind_con_var <- function(var_in) {
     mutate(efc_ind_var = mean) %>% 
     select(efc_ind_var)
   
-  df <- df %>% cbind(efc_ind_var_pred)
+  df <- bloqueo_df %>% cbind(efc_ind_var_pred)
   
   ## COMPARACIONES
   ggp <- df %>% as_tibble() %>% 
-    ggplot2::ggplot(aes(x=df[[var_in[1]]], y=efc_ind_var)) + 
+    ggplot2::ggplot(aes(x=!!sym(var_in), y=efc_ind_var)) + 
     geom_point() +
-    ylim( y = c(1,5)) +
-    xlim(c(1,5)) %>% labs(x=var_in[1], title=var_in[2])
+    coord_equal() %>% 
+    labs(x=var_in, title= paste ("Efectos independientes con variables: Y vs Y predicha ",var_in) )
   print(ggp)
   
   # PSEUDO R2
-  out.yf<-out_mod_efc_ind_var_resumen[grep("yf1",rownames(out_mod_efc_ind_var_resumen)),]
-  plot(df[[var_in[1]]], out.yf[,1],xlab=var_in[1])
-  title("Efectos independientes con variables: Y vs Y predicha")
-  R2<-(cor(df[[var_in[1]]], out.yf[,1]))^2
-  #print("R2")
-  #print(R2)
-  pR2_efc_ind_con_var <<- c(pR2_efc_ind_con_var,R2)
+  pR2_efc_ind_con_var <<- cor(pull(bloqueo_df[var_in]),  pull(efc_ind_var_pred))^2
 }
+
+### ------------------------------ Función que corre todos los modelos para cada período
+
+
+#i=2
+#bloqueo_df <- funct_base(bloqueo, vect_names, i)
+#n <- nrow(bloqueo_df); n
+#var_ini <- bloqueo_df$VAS_AB
+#var_in <-vect_names[i] 
+
+
+       
+i=1   
+vect_names <- bloqueo %>% select(starts_with("VAS")) %>% select(-ends_with("DIS"),-VAS_AB) %>% names()
+
+
+modelos finales
+
+modelos<- function( vect_names,bloqueo) {
+  modelos_fin <- list()
+  
+  
+  bloqueo_df <- funct_base(bloqueo, vect_names, i)
+  print(bloqueo_df)
+  n <- nrow(bloqueo_df)
+  var_ini <- bloqueo_df$VAS_AB
+  var_in <-vect_names[i]
+  print(var_in)
+  modelos_fin[var_in] <- fun_efc_ctes(var_in, bloqueo_df, var_ini, dic_efc_ctes, pR2_efc_ctes, n)
+
+  
+  
+  }
+  #fun_efc_ind(var_in, bloqueo_df)
+  #fun_efc_int(var_in, bloqueo_df)
+  #fun_efc_ind_con_var(var_in,bloqueo_df)
+}
+
+
+
+
+modelos ( i, vect_names,bloqueo)
+
+
+
+
+
 
 # CORRIDA COMPLETA
 # Efectos constantes ----------------------------------------------------------------------------------------------------------------
