@@ -11,59 +11,50 @@ bloqueo <- read_csv("data/BloqueoDatosPeriodo.csv")
 #View(bloqueo)
 # EDA
 bloqueo %>% glimpse()
+
+bloqueo <- bloqueo %>% mutate(
+  GrupoEdad = if_else(Edad < 50, "Grupo1", "Grupo2"),
+  VAS_6M = as.numeric(VAS_6M),
+  GrupoIMC = case_when(
+    IMC < 18.5 ~ "PorDebajo",
+    IMC < 24.9 ~ "Saludable",
+    T ~ "Sobrepeso"
+  ),
+  TipoCancer2 = if_else(TipoCancer == "CACU", "CACU", "OTRO")
+) %>% 
+  mutate_at(vars(Sexo, GrupoEdad, TipoCancer2,GrupoIMC), as.factor)
+
 skimr::skim(bloqueo)
 
-# Seleccionando filas sin NA
-bloqueo_sin_na <- na.omit(bloqueo)
-#bloqueo_sin_na
-#View(bloqueo_sin_na)
+#Filtrado
+vect_names <- bloqueo %>% select(starts_with("VAS")) %>% select(-ends_with("DIS"),-VAS_AB) %>% names()
+vect_names
 
-# Agrupando datos
-bloqueo_sin_na <-bloqueo_sin_na %>%  
-  mutate(
-    GrupoEdad = if_else(Edad < 50, "Grupo1", "Grupo2"),
-    VAS_6M = as.numeric(VAS_6M),
-    GrupoIMC = case_when(
-      IMC < 18.5 ~ "PorDebajo",
-      IMC < 24.9 ~ "Saludable",
-      T ~ "Sobrepeso"
-    ),
-    TipoCancer2 = if_else(TipoCancer == "CACU", "CACU", "OTRO")
-  ) %>% 
-  mutate_at(vars(Sexo, GrupoEdad, TipoCancer2,GrupoIMC), as.factor)
-#View(bloqueo_sin_na)
-bloqueo_sin_na %>% glimpse()
 
-bloqueo_df <-bloqueo_sin_na %>%  
-  mutate(
-    GrupoEdad = if_else(Edad < 50, "Grupo1", "Grupo2"),
-    GrupoIMC = case_when(
-      IMC < 18.5 ~ "PorDebajo",
-      IMC < 24.9 ~ "Saludable",
-      T ~ "Sobrepeso"
-    ),
-    TipoCancer2 = if_else(TipoCancer == "CACU", "CACU", "OTRO")
-  ) %>% 
-  mutate_at(vars(Sexo, GrupoEdad, TipoCancer2,GrupoIMC), as.factor  ) %>%
+funct_base <- function(bloqueo, vect_names, i){
+bloqueo_agrupada <- bloqueo %>% 
+  select("Sexo","GrupoEdad","GrupoIMC","TipoCancer2", "VAS_AB", vect_names[1]) %>%  
+  na.omit() %>% 
   group_by(Sexo, GrupoEdad, TipoCancer2, GrupoIMC) %>% 
   summarise(
     n = n(),
     VAS_AB = mean(VAS_AB, na.rm = T), 
-    VAS_24 = mean(VAS_24, na.rm = T),
-    VAS_7D = mean(VAS_7D, na.rm = T),
-    VAS_7D = mean(VAS_7D, na.rm = T),
-    VAS_1M = mean(VAS_1M, na.rm = T),
-    VAS_3M = mean(VAS_3M, na.rm = T),
-    VAS_6M = mean(VAS_6M, na.rm = T),
+    OTRO_VAS = mean(vars(6), na.rm = T),#mean(bloqueo(vect_names[1]), na.rm = T),
     .groups = "drop"
   ) %>% 
-  arrange(n)
+  arrange(n) 
 
-#View(bloqueo_df)
+nuevos_nombres <- c(bloqueo_agrupada %>% select(-7) %>% names(),  vect_names[i])
+names(bloqueo_agrupada) <- nuevos_nombres
 
-bloqueo_df %>% glimpse()
+bloqueo_agrupada
+}
 
-#n<-nrow(bloqueo_df); n
+bloqueo_df_24 <- funct_base(bloqueo, vect_names, 1)
+bloqueo_df_7d <- funct_base(bloqueo, vect_names, 2)
+bloqueo_df_1m <- funct_base(bloqueo, vect_names, 3)
+bloqueo_df_3m <- funct_base(bloqueo, vect_names, 4)
+bloqueo_df_6m <- funct_base(bloqueo, vect_names, 5)
 
 ############################ DESCRIPTIVO #########
 # bloqueo_df %>% 
@@ -147,8 +138,8 @@ fun_efc_ctes <- function(var_in) {
   ggp <- df %>% as_tibble() %>% 
     ggplot2::ggplot(aes(x=df[[var_in[1]]], y=efc_con)) + 
     geom_point() +
-    ylim( y = c(1,5)) +
-    xlim(c(1,5)) %>% labs(x=var_in[1], title=var_in[2])
+    ylim( y = c(1,6)) +
+    xlim(c(1,6)) + coord_equal() %>% labs(x=var_in[1], title=var_in[2]) 
   print(ggp)
   
   # PSEUDO R2
