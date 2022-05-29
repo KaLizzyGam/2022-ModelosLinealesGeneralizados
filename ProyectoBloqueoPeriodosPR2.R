@@ -115,7 +115,7 @@ fun_efc_ctes <- function(var_in, bloqueo_df, var_ini, n) {
 ############################ EFECTOS INDEPENDIENTES  #####################
 fun_efc_ind <- function(var_in, bloqueo_df, var_ini, n) {
   #-Defining data-
-  data<-list("n"=n,"y"= pull(bloqueo_df[var_in] + 1)  ,"vasab"= var_ini +1 )
+  data<-list("n"=n,"y"= pull(bloqueo_df[var_in] + ß1)  ,"vasab"= var_ini +1 )
   inits_efc_ind <- function(){list(theta=rep(1,n),yf1=rep(1,n))}
   pars_ind<-c("theta","yf1")
   

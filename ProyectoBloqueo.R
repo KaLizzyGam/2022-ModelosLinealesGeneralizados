@@ -1,7 +1,7 @@
-library(R2jags)
 library(readr)
 library(dplyr)
 library(tidyr)
+library(R2jags)
 library(skimr)
 library(ggplot2)
 
@@ -110,7 +110,7 @@ out_mod_efc_con_resumen <- mod_efc_con_jags$BUGSoutput$summary
 out_mod_efc_con_dic <- mod_efc_con_jags$BUGSoutput$DIC; out_mod_efc_con_dic
 
 names <- rownames(out_mod_efc_con_resumen)
-efc_con_pred <-  as.data.frame(out_mod_efc_con_resumen) %>% 
+efc_con_pred <-  as_data_frame(out_mod_efc_con_resumen) %>% 
   cbind(names)  %>% 
   tibble() %>% 
   select(mean, names) %>% 
@@ -170,7 +170,7 @@ out_mod_efc_ind_resumen <- mod_efc_ind_jags$BUGSoutput$summary
 out_mod_efc_ind_dic <- mod_efc_ind_jags$BUGSoutput$DIC ; out_mod_efc_ind_dic
 
 names <- rownames(out_mod_efc_ind_resumen)
-efc_ind_pred <-  as.data.frame(out_mod_efc_ind_resumen) %>% 
+efc_ind_pred <-  as_data_frame(out_mod_efc_ind_resumen) %>% 
   cbind(names)  %>% 
   tibble() %>% 
   select(mean, names) %>% 
@@ -230,7 +230,7 @@ out_mod_efc_inter_resumen <- mod_efc_inter_jags$BUGSoutput$summary
 out_mod_efc_inter_dic <- mod_efc_inter_jags$BUGSoutput$DIC; out_mod_efc_inter_dic
 
 names <- rownames(out_mod_efc_inter_resumen)
-efc_inter_pred <-  as.data.frame(out_mod_efc_inter_resumen) %>% 
+efc_inter_pred <-  as_data_frame(out_mod_efc_inter_resumen) %>% 
   cbind(names)  %>% 
   tibble() %>% 
   select(mean, names) %>% 
@@ -284,6 +284,10 @@ pars_ind_var <-c(
   "beta_cancer_adj",
   "beta_imc_adj")
 
+
+
+
+
 ##OpenBUGS
 #mod_efc_ind_var_bugs <- bugs(
 #  data,
@@ -313,7 +317,7 @@ out_mod_efc_ind_var_resumen <- mod_efc_ind_var_jags$BUGSoutput$summary
 out_mod_efc_ind_var_dic <- mod_efc_ind_var_jags$BUGSoutput$DIC
 
 names <- rownames(out_mod_efc_ind_var_resumen)
-efc_ind_var_pred <-  as.data.frame(out_mod_efc_ind_var_resumen) %>% 
+efc_ind_var_pred <-  as_data_frame(out_mod_efc_ind_var_resumen) %>% 
   cbind(names)  %>% 
   tibble() %>% 
   select(mean, names) %>% 
