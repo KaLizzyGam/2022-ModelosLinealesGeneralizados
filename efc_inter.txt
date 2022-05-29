@@ -8,8 +8,8 @@ for (i in 1:n) {
 
 #Priors 
 for (j in 1:n) { theta[j] ~ dbeta(a,b) }
-a ~ dgamma(0.01,0.01)
-b ~ dgamma(0.01,0.01)
+a ~ dgamma(0.01, 1)
+b ~ dgamma(0.01, 1)
 
 #Prediction 1
 for (i in 1:n) { yf1[i] ~ dgamma(mu[i], 1)}
