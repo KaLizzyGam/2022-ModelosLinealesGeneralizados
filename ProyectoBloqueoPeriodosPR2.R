@@ -6,6 +6,8 @@ library(skimr)
 library(ggplot2)
 library(rlang)
 
+set.seed(1234)
+
 ###### Carga de datos
 bloqueo <- read_csv("data/BloqueoDatosPeriodo.csv")
 
@@ -19,7 +21,11 @@ bloqueo <- bloqueo %>%
     IMC < 24.9 ~ "Saludable",
     T ~ "Sobrepeso"),
   TipoCancer2 = if_else(TipoCancer == "CACU", "CACU", "OTRO")) %>% 
-  mutate_at(vars(Sexo, GrupoEdad, TipoCancer2,GrupoIMC), as.factor)
+  mutate_at(vars(Sexo, GrupoEdad, TipoCancer2,GrupoIMC), as.factor) %>%
+  mutate(
+    VAS_3M = if_else(is.na(VAS_3M), VAS_1M, VAS_3M),
+    VAS_6M = if_else(is.na(VAS_6M), VAS_3M, VAS_6M)
+  )
 
 skimr::skim(bloqueo)
 
@@ -315,12 +321,7 @@ fun_efc_ind_con_var <- function(var_in, bloqueo_df, var_ini, n) {
   return(modelo)
 }
 
-
-
-
 ############################ ITERACION SOBRE TODOS LOS MODELOS   #####################
-     
-  
 vect_names <- bloqueo %>% select(starts_with("VAS")) %>% select(-ends_with("DIS"),-VAS_AB) %>% names()
 
 modelos<- function( vect_names,bloqueo) {
@@ -331,7 +332,7 @@ modelos<- function( vect_names,bloqueo) {
     
     #Parametros de cada modelo  
     bloqueo_df <- funct_base(bloqueo, vect_names, i)
-            n <- nrow(bloqueo_df)
+    n <- nrow(bloqueo_df)
     var_ini <- bloqueo_df$VAS_AB
     var_in <-vect_names[i]
 
@@ -339,7 +340,7 @@ modelos<- function( vect_names,bloqueo) {
     modelo_con <- fun_efc_ctes(var_in, bloqueo_df, var_ini, n)
     nombre <- paste(modelo_con["modelo"], var_in )
     modelos_fin[[nombre]] <- modelo_con
-    
+     
     modelo_ind <- fun_efc_ind(var_in, bloqueo_df, var_ini, n)
     nombre <- paste(modelo_ind["modelo"], var_in )
     modelos_fin[[nombre]] <- modelo_ind
@@ -356,147 +357,5 @@ modelos<- function( vect_names,bloqueo) {
     modelos_fin
 }
 
-
-
-
 modelos_todos<- modelos ( vect_names,bloqueo)
-modelos_todos
-
-
-
-
-
-
-# CORRIDA COMPLETA
-# Efectos constantes ----------------------------------------------------------------------------------------------------------------
-
-t_g <- c("Efectos constantes a las 24 hrs.","Efectos constantes a los 7 días","Efectos constantes al mes","Efectos constantes a los 3 meses","Efectos constantes a los 6 meses")
-# Data frame
-df_param <- data.frame(var_fin = var_f, title_grap = t_g)
-apply(X = df_param, MARGIN = 1, FUN = fun_efc_ctes)
-print("Efectos constantes")
-print(dic_efc_ctes)
-print(pR2_efc_ctes)
-
-# Efectos independientes ------------------------------------------------------------------------------------------------------------
-
-t_g <- c("Efectos independientes a las 24 hrs.","Efectos independientes a los 7 días","Efectos independientes al mes","Efectos independientes a los 3 meses","Efectos independientes a los 6 meses")
-
-# Data frame
-df_param <- data.frame(var_fin = var_f, title_grap = t_g)
-apply(X = df_param, MARGIN = 1, FUN = fun_efc_ind)
-print("Efectos independientes")
-print(dic_efc_ind)
-print(pR2_efc_ind)
-
-# Efectos intercambiables ----------------------------------------------------------------------------------------------------------------
-
-t_g <- c("Efectos intercambiables a las 24 hrs.","Efectos intercambiables a los 7 días","Efectos intercambiables al mes","Efectos intercambiables a los 3 meses","Efectos intercambiables a los 6 meses")
-# Data frame
-df_param <- data.frame(var_fin = var_f, title_grap = t_g)
-apply(X = df_param, MARGIN = 1, FUN = fun_efc_int)
-
-print("Efectos intercambiables")
-print(dic_efc_int)
-print(pR2_efc_int)
-
-# Efectos independientes con variables ----------------------------------------------------------------------------------------------------------------
-
-t_g <- c("Efectos independientes con variables a las 24 hrs.",
-         "Efectos independientes con variables a los 7 días",
-         "Efectos independientes con variables al mes",
-         "Efectos independientes con variables a los 3 meses",
-         "Efectos independientes con variables a los 6 meses")
-
-# Data frame
-df_param <- data.frame(var_fin = var_f, title_grap = t_g)
-apply(X = df_param, MARGIN = 1, FUN = fun_efc_ind_con_var)
-
-print("Efectos independientes con variables")
-print(dic_efc_ind_con_var)
-print(pR2_efc_ind_con_var)
-
-
-
-
-# ---> NO CORRER
-############################ EFECTOS INTERCAMBIABLES CON VARIABLES -> pendiente 
-
-data<-list("n"=n,"y"=bloqueo_df$VAS_1M + 1,"vasab"= bloqueo_df$VAS_AB + 1)
-inits_efc_inter <-function(){list(theta=rep(1,n),a=1,b=1,yf1=rep(1,n))}
-pars_inter <-c("theta","eta","yf1")
-
-data<-list(
-  "n"=n,
-  "y"=bloqueo_df$VAS_1M + 1,
-  "sexo"=bloqueo_df$Sexo,
-  "edad"=bloqueo_df$GrupoEdad,
-  "cancer"=bloqueo_df$TipoCancer2,
-  "imc"=bloqueo_df$GrupoIMC, 
-  "vasab" = bloqueo_df$VAS_AB + 1)
-
-inits_efc_ind_var <- function(){
-  list(
-    yf1=rep(1,n),
-    beta_sexo=rep(1,2), 
-    beta_edad=rep(1,2), 
-    alpha = 1, 
-    beta_cancer=rep(1,2),
-    beta_imc=rep(1,3) ) }
-
-pars_ind_var <-c(
-  "theta",
-  "yf1",
-  "alpha_adj",
-  "beta_sexo_adj",
-  "beta_edad_adj", 
-  "beta_cancer_adj",
-  "beta_imc_adj")
-
-
-##OpenBUGS
-#mod_efc_inter_bugs <- bugs(
-#  data,
-#  inits_efc_ind,
-#  pars_ind,
-#  model.file="efc_inter.txt",
-#  n.iter=50000,
-#  n.chains=2
-#  ,n.burnin=5000)
-
-#JAGS
-mod_efc_inter_jags <-jags(
-  data,
-  inits_efc_inter,
-  pars_inter,
-  model.file="efc_inter.txt",
-  n.iter=50000,
-  n.chains=2,
-  n.burnin=5000,
-  n.thin=1)
-
-
-mod_efc_inter_jags
-
-out_mod_efc_inter_simulaciones <- mod_efc_inter_jags$BUGSoutput$sims.list
-out_mod_efc_inter_resumen <- mod_efc_inter_jags$BUGSoutput$summary 
-out_mod_efc_inter_dic <- mod_efc_inter_jags$BUGSoutput$DIC; out_mod_efc_inter_dic
-
-names <- rownames(out_mod_efc_inter_resumen)
-efc_inter_pred <-  as.data.frame(out_mod_efc_inter_resumen) %>% 
-  cbind(names)  %>% 
-  tibble() %>% 
-  select(mean, names) %>% 
-  filter(grepl('yf1', names)) %>% 
-  mutate(efc_inter = mean) %>% 
-  select(efc_inter)
-
-bloqueo_df <- bloqueo_df %>% cbind(efc_inter_pred)
-
-
-## COMPARACIONES
-bloqueo_df %>% as_tibble() %>% 
-  ggplot2::ggplot(aes(x=VAS_1M, y=efc_inter)) + 
-  geom_jitter()+
-  ylim( y = c(1,5)) +
-  xlim(c(1,5))
+#modelos_todos
