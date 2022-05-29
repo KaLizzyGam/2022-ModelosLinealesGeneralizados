@@ -1,0 +1,57 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+**EFECTOS CONSTANTES**
+
+$$
+Y_i|\mu_i \sim Ga(\mu_i,1) \\
+\mu_i = \theta X_i \\ \\
+$$
+donde 
+
+$$\theta \sim N(0,1)$$
+**EFECTOS INDEPENDIENTES**
+
+
+$$
+Y_i|\mu_i \sim Ga(\mu_i,1) \\
+\mu_i = \theta_i X_i \\ \\
+$$
+
+
+donde 
+
+$$\theta_i \sim N(0,1)$$
+**EFECTOS INTERCAMBIABLES**
+
+$$
+Y_i|\mu_i \sim Ga(\mu_i,1) \\
+\mu_i = \theta_i X_i \\ \\
+$$
+
+donde 
+
+$$
+\theta_i \sim Beta(\alpha,\beta)\\
+\alpha \sim Ga(0.01,0.009) \\
+\beta \sim Ga(0.01,0.009) 
+$$
+**EFECTOS INTERCAMBIABLES CON VARIABLES**
+
+
+$$
+Y_i|\mu_i \sim Ga(\mu_i,1) \\
+\mu_i = \theta_i X_i \\ \\
+log(\theta_i) = \beta_0 + \beta_{sexo_i} + \beta_{edad_j} + \beta_{tipo-cancer_k} + \beta_{imc_l} 
+$$
+donde
+
+$$
+\beta_0 \sim N(0,2)\\
+\beta_{sexo_i} \sim N(0,2) \\
+\beta_{edad_j} \sim N(0,2) \\
+\beta_{tipo-cancer_k} \sim N(0,2) \\
+\beta_{imc_l} \sim N(0,2)
+$$
